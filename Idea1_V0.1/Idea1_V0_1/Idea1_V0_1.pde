@@ -1,4 +1,5 @@
 char[] chars = {'q','w','e','r','t','y','u','i','o','p','a','s','d','f','g','h','j','k','l','z','x','c','v','b','n','m',' '};
+//char[] chars = {'Q','W','E','R','T','Y','U','I','O','P','A','S','D','F','G','H','J','K','L','Z','X','C','V','B','N','M',' '}; //incase we want to test the upper case keyboard
 Button[] touches = new Button[chars.length];
 
 int charVal = 97;
@@ -6,9 +7,10 @@ int xpos = 20;
 int ypos = 20;
 int keySize = 40;
 String lastPress;
-float sVal = 1;
-float tranX = 0;
-float tranY = 0;
+int enlargeFactor = 2; //change this to adjust the enlargment of design
+int sVal = 1; //variable to store the current enlarge factor
+int tranX = 0; //x coordinate shift amount
+int tranY = 0; //y coordinate shift amount
 
 void setup(){
   size(577,577);
@@ -34,24 +36,42 @@ void setup(){
 
 void draw(){
   
-  //translate(tranX, tranY);
+  background(0);
+  
+  //pushMatrix();
+  
   scale(sVal);
+  translate(tranX, tranY);
+    
   for (int i = 0; i < touches.length; i++){
     touches[i].display(i);
   }
+  
+  //popMatrix();
 }
 
 void mouseReleased(){
- if (sVal != 1){
+//zoom out after click the key
+  if (sVal != 1){
    for (int i = 0; i < touches.length; i++){
    lastPress = touches[i].keyCheck(mouseX, mouseY,i);
+   //println(mouseX, mouseY);
+   //println(touches[0].x, touches[0].y);
+   tranX = 0;
+   tranY = 0;
+   sVal = 1;
    }
    //println(lastPress); //prints "null"
+   
  }
+//zoom in when screen with full keyboard clicked
  else{
-   sVal = 3;
-   tranX = (-mouseX+577/2);
-   tranY = (-mouseY+577/2);
+   sVal = enlargeFactor;
+   tranX = -(mouseX - 577/(2*sVal)); 
+   print(tranX);
+   tranY = -(mouseY - 577/(2*sVal));
+   //tranX = -mouseX*((sVal-1)/sVal);
+   //tranY = -mouseY*((sVal-1)/sVal);
  }
 }
 
@@ -84,8 +104,10 @@ class Button {
   }
 
   String keyCheck(int Xmouse, int Ymouse, int i){
-    if(Xmouse > x*sVal+tranX && Xmouse < x + keySize && Ymouse > y && Ymouse < y + keySize && i!=26){
-      println(charString); //prints relevant char
+    print(tranX);
+    if(Xmouse > (2*x)*sVal+tranX && Xmouse < (2*x)*sVal+tranX + keySize*sVal && Ymouse > (2*y)*sVal+tranY && Ymouse < (2*y)*sVal+tranY + keySize*sVal && i!=26){
+      
+      //println(charString); //prints relevant char
       return charString;
     }  
     else if(Xmouse > x && Xmouse < x + 6*keySize && Ymouse > y && Ymouse < y + keySize && i==26){
@@ -95,5 +117,4 @@ class Button {
     else {
     return null;
     }
-  }
-}
+  }}
