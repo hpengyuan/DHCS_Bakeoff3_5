@@ -14,6 +14,7 @@ int tranY = 0; //y coordinate shift amount
 
 void setup(){
   size(577,577);
+  //set position of each key
   for (int i = 0; i < chars.length; i++) { 
     //chars[i] = char(charVal);
     charVal++;
@@ -37,17 +38,13 @@ void setup(){
 void draw(){
   
   background(0);
-  
-  //pushMatrix();
-  
-  scale(sVal);
-  translate(tranX, tranY);
-    
+  pushMatrix();
+  scale(sVal);//zoom in or out accordingly to the sVal value
+  translate(tranX, tranY); //move the clicked point to the center of screen after zoom in
   for (int i = 0; i < touches.length; i++){
     touches[i].display(i);
   }
-  
-  //popMatrix();
+  popMatrix();
 }
 
 void mouseReleased(){
@@ -55,12 +52,10 @@ void mouseReleased(){
   if (sVal != 1){
    for (int i = 0; i < touches.length; i++){
    lastPress = touches[i].keyCheck(mouseX, mouseY,i);
-   //println(mouseX, mouseY);
-   //println(touches[0].x, touches[0].y);
+   }
    tranX = 0;
    tranY = 0;
    sVal = 1;
-   }
    //println(lastPress); //prints "null"
    
  }
@@ -68,7 +63,6 @@ void mouseReleased(){
  else{
    sVal = enlargeFactor;
    tranX = -(mouseX - 577/(2*sVal)); 
-   print(tranX);
    tranY = -(mouseY - 577/(2*sVal));
    //tranX = -mouseX*((sVal-1)/sVal);
    //tranY = -mouseY*((sVal-1)/sVal);
@@ -104,17 +98,18 @@ class Button {
   }
 
   String keyCheck(int Xmouse, int Ymouse, int i){
-    print(tranX);
-    if(Xmouse > (2*x)*sVal+tranX && Xmouse < (2*x)*sVal+tranX + keySize*sVal && Ymouse > (2*y)*sVal+tranY && Ymouse < (2*y)*sVal+tranY + keySize*sVal && i!=26){
-      
-      //println(charString); //prints relevant char
+    //check if a-z key pressed
+    if(Xmouse > (x+tranX)*sVal && Xmouse < (x+tranX+keySize)*sVal && Ymouse > (y+tranY)*sVal && Ymouse < (y+tranY+keySize)*sVal && i!=26){
+      println(charString); 
       return charString;
-    }  
-    else if(Xmouse > x && Xmouse < x + 6*keySize && Ymouse > y && Ymouse < y + keySize && i==26){
+    } 
+    //check if space key pressed
+    else if(Xmouse > x*sVal+tranX*sVal && Xmouse < x*sVal+tranX*sVal + 6*keySize*sVal && Ymouse > y*sVal+tranY*sVal && Ymouse < y*sVal+tranY*sVal + keySize*sVal && i==26){
       println(charString); //prints relevant char
       return charString;
     }  
     else {
     return null;
     }
-  }}
+  }
+}
