@@ -21,14 +21,14 @@ char[] chars = {'q','w','e','r','t','y','u','i','o','p','a','s','d','f','g','h',
 //char[] chars = {'Q','W','E','R','T','Y','U','I','O','P','A','S','D','F','G','H','J','K','L','Z','X','C','V','B','N','M',' '}; //incase we want to test the upper case keyboard
 Button[] touches = new Button[chars.length];
 
-int windowX = 200;
-int windowY = 200;
+int windowX = 431;
+int windowY = 991;
 int charVal = 97;
-int xpos = 40+windowX;
+int xpos = 20+windowX;
 int ypos = 80+windowY;
-int keySize = 40;
+int keySize = 50;
 String lastPress;
-int enlargeFactor = 2; //change this to adjust the enlargment of design
+int enlargeFactor = 3; //change this to adjust the enlargment of design
 int sVal = 1; //variable to store the current enlarge factor
 int tranX = 0; //x coordinate shift amount
 int tranY = 0; //y coordinate shift amount
@@ -49,18 +49,18 @@ void setup()
     charVal++;
      if (i==10 ){
       ypos += keySize+20;
-      xpos = 65+windowX;
+      xpos = 45+windowX;
      }
      if (i==19 ){
       ypos += keySize+20;
-      xpos = 90+windowX;
+      xpos = 70+windowX;
      }
      if (i==26 ){
       ypos += keySize+20;
-      xpos = 125+windowX;
+      xpos = 105+windowX;
      }
     touches[i] = new Button(chars[i], xpos, ypos);
-    xpos += 50;
+    xpos += 55;
   }
 }
 
@@ -71,7 +71,7 @@ void draw()
 
  // image(watch,-200,200);
   fill(100);
-  rect(200, 200, sizeOfInputArea, sizeOfInputArea); //input area should be 2" by 2"
+  rect(windowX, windowY, sizeOfInputArea, sizeOfInputArea); //input area should be 1" by 1"
   
   
   //ideal1 draw codes
@@ -87,12 +87,13 @@ void draw()
     rect(windowX, windowY+0.6*sizeOfInputArea,0.5*sizeOfInputArea,0.4*sizeOfInputArea);
     textAlign(CENTER);
     fill(255);
-    text("Delete", windowX+0.25*sizeOfInputArea, windowY+0.8*sizeOfInputArea);
+    textSize(70);
+    text("Delete", windowX+0.25*sizeOfInputArea, windowY+0.83*sizeOfInputArea);
     fill(255);
     rect(windowX+0.5*sizeOfInputArea, windowY+0.6*sizeOfInputArea,0.5*sizeOfInputArea,0.4*sizeOfInputArea);
     textAlign(CENTER);
     fill(0);
-    text("Space", windowX+0.75*sizeOfInputArea, windowY+0.8*sizeOfInputArea);
+    text("Space", windowX+0.75*sizeOfInputArea, windowY+0.83*sizeOfInputArea);
     
   }
   
@@ -106,15 +107,18 @@ void draw()
   {
     fill(255);
     textAlign(CENTER);
-    text("Finished", 280, 150);
+    text("Finished", 280, 400);
     return;
   }
-
+  
+  
+    
+  textSize(60);
   if (startTime==0 & !mousePressed)
   {
     fill(255);
     textAlign(LEFT);
-    text("Click to start time!", windowX, 150); //display this messsage until the user clicks!
+    text("Click to start time!", windowX-100, windowY-300); //display this messsage until the user clicks!
   }
 
   if (startTime==0 & mousePressed)
@@ -127,46 +131,62 @@ void draw()
     //you will need something like the next 10 lines in your code. Output does not have to be within the 2 inch area!
     textAlign(LEFT); //align the text left
     fill(128);
-    text("Phrase " + (currTrialNum+1) + " of " + totalTrialNum, 70, 50); //draw the trial count
+    textSize(55);
+    text("Phrase " + (currTrialNum+1) + " of " + totalTrialNum, windowX-250, windowY-300); //draw the trial count
     fill(255);
-    text("Target:    " + currentPhrase, 70, 100); //draw the target string
-    text("Entered:  ", 70, 140);//draw what the user has entered thus far
+    text("Target:    " , windowX-250, windowY-200); //draw the target string
+    int start = windowX;
+    int space = 28;
+    textAlign(CENTER);
+    for (int i=0; i<currentPhrase.length();i++){
+      if (currentPhrase.charAt(i) == ' '){
+          fill(255);
+          text("_" ,start+space*i,windowY-200);
+        }
+        else{
+          fill(255);
+          text(currentPhrase.charAt(i) ,start+space*i,windowY-200);
+        }  
+    }
+    textAlign(LEFT);
+    text("Entered:  ", windowX-250, windowY-100);//draw what the user has entered thus fa
     textAlign(CENTER);
     for (int i=0; i<currentTyped.length(); i++){
-     if (currentTyped.charAt(i) == currentPhrase.charAt(i)){ 
+        if (currentTyped.charAt(i) == currentPhrase.charAt(i)){ 
         if (currentTyped.charAt(i) == ' '){
           fill(0,255,0);
-          text("_" ,200+15*i,140);
+          text("_" ,start+space*i,windowY-100);
         }
         else{
           fill(0,255,0);
-          text(currentTyped.charAt(i) ,200+15*i,140);
+          text(currentTyped.charAt(i) ,start+space*i,windowY-100);
         }
       }
       else{
         if (currentTyped.charAt(i) == ' '){
           fill(255,0,0);
-          text("_" ,200+15*i,140);
+          text("_" ,start+space*i,windowY-100);
         }
         else{
           fill(255,0,0);
-          text(currentTyped.charAt(i) ,200+15*i,140);
+          text(currentTyped.charAt(i) ,start+space*i,windowY-100);
         }  
       }
 
     }
    if(millis()%1000 < 500){
      fill(255);
-     text("_",200+15*(currentTyped.length()),140);
+     text("_", (currentTyped.length())*space+start,windowY-100);
    }
   }
     
     
     fill(255, 0, 0);
-    rect(800, 00, 200, 200); //drag next button
+    rect(windowX+sizeOfInputArea+100, windowY, 200, 200); //drag next button
     fill(255);
-    textAlign(LEFT);
-    text("NEXT > ", 850, 100); //draw next label
+    textSize(70);
+    textAlign(CENTER);
+    text("NEXT", windowX+sizeOfInputArea+200, windowY+120); //draw next label
 
     ////my draw code
     //textAlign(CENTER);
@@ -231,7 +251,8 @@ class Button {
     rect(x,y,keySize,keySize);
     fill(0);
     textSize(30);
-    text(charString,x+0.2*keySize,y+0.75*keySize);
+    textAlign(CENTER);
+    text(charString,x+0.5*keySize,y+0.75*keySize);
     }
     else {
     fill(255);
@@ -297,7 +318,7 @@ void mousePressed()
   //}
 
   //You are allowed to have a next button outside the 2" area
-  if (didMouseClick(800, 00, 200, 200)) //check if click is in next button
+  if (didMouseClick(windowX+sizeOfInputArea+100, windowY, 200, 200)) //check if click is in next button
   {
   nextTrial(); //if so, advance to next trial
   }
