@@ -25,7 +25,7 @@ int windowX = 200;
 int windowY = 200;
 int charVal = 97;
 int xpos = 40+windowX;
-int ypos = 150+windowY;
+int ypos = 80+windowY;
 int keySize = 40;
 String lastPress;
 int enlargeFactor = 2; //change this to adjust the enlargment of design
@@ -82,6 +82,16 @@ void draw()
   touches[i].display(i);
   }
   popMatrix();
+  if (sVal == 1){
+    fill(255,0,0);
+    rect(windowX, windowY+0.6*sizeOfInputArea,0.5*sizeOfInputArea,0.4*sizeOfInputArea);
+    textAlign(CENTER);
+    fill(255);
+    text("BACKSPACE", windowX+0.25*sizeOfInputArea, windowY+0.8*sizeOfInputArea);
+    
+  }
+  
+  
   fill(0);
   rect(0,0,1440,windowY);
   rect(0,0,windowX,2560);
@@ -146,12 +156,18 @@ void mouseReleased(){
      sVal = 1;
     }
     //zoom in when screen with full keyboard clicked
+   
    else{
+     if (mouseX > windowX && mouseX < windowY+sizeOfInputArea*0.6 && mouseY > windowY+0.5*sizeOfInputArea && mouseY<0.4*sizeOfInputArea){
+     currentTyped.replace(currentTyped.substring(currentTyped.length()-1), "");
+     }
+     else{
      sVal = enlargeFactor;
      tranX = -(mouseX - int(sizeOfInputArea)/(2*sVal)-windowX/sVal); 
      tranY = -(mouseY - int(sizeOfInputArea)/(2*sVal)-windowY/sVal);
      //tranX = -mouseX*((sVal-1)/sVal);
      //tranY = -mouseY*((sVal-1)/sVal);
+     }
    }
  }
 }
@@ -186,14 +202,15 @@ class Button {
 
   String keyCheck(int Xmouse, int Ymouse, int i){
     //check if a-z key pressed
-    if(Xmouse > (x+tranX)*sVal && Xmouse < (x+tranX+keySize)*sVal && Ymouse > (y+tranY)*sVal && Ymouse < (y+tranY+keySize)*sVal && i!=26){
+    if(Xmouse > (x+tranX)*sVal && Xmouse < (x+tranX+keySize)*sVal && Ymouse > (y+tranY)*sVal && Ymouse < (y+tranY+keySize)*sVal && i != 26){
       println(charString); 
       currentTyped += charString;
       return charString;
     } 
     //check if space key pressed
-    else if(Xmouse > x*sVal+tranX*sVal && Xmouse < x*sVal+tranX*sVal + 6*keySize*sVal && Ymouse > y*sVal+tranY*sVal && Ymouse < y*sVal+tranY*sVal + keySize*sVal && i==26){
+    else if(Xmouse > (x+tranX)*sVal && Xmouse < (x+tranX+keySize*6)*sVal && Ymouse > (y+tranY)*sVal && Ymouse < (y+tranY+keySize)*sVal && i==26){
       println(charString); //prints relevant char
+      currentTyped += charString;
       return charString;
     }  
     else {
@@ -205,11 +222,11 @@ class Button {
 
 
 
-//original code
-boolean didMouseClick(float x, float y, float w, float h) //simple function to do hit testing
-{
-  return (mouseX > x && mouseX<x+w && mouseY>y && mouseY<y+h); //check to see if it is in button bounds
-}
+////original code
+//boolean didMouseClick(float x, float y, float w, float h) //simple function to do hit testing
+//{
+//  return (mouseX > x && mouseX<x+w && mouseY>y && mouseY<y+h); //check to see if it is in button bounds
+//}
 
 
 void mousePressed()
@@ -240,12 +257,12 @@ void mousePressed()
   //}
 
   //You are allowed to have a next button outside the 2" area
-  if (didMouseClick(800, 00, 200, 200)) //check if click is in next button
-  {
-    nextTrial(); //if so, advance to next trial
-  }
+  //if (didMouseClick(800, 00, 200, 200)) //check if click is in next button
+  //{
+  //  nextTrial(); //if so, advance to next trial
+  //}
 }
-
+//
 
 void nextTrial()
 {
