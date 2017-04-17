@@ -158,8 +158,10 @@ void mouseReleased(){
     //zoom in when screen with full keyboard clicked
    
    else{
-     if (mouseX > windowX && mouseX < windowY+sizeOfInputArea*0.6 && mouseY > windowY+0.5*sizeOfInputArea && mouseY<0.4*sizeOfInputArea){
-     currentTyped.replace(currentTyped.substring(currentTyped.length()-1), "");
+     if (mouseX > windowX && mouseX < windowY+sizeOfInputArea*0.5 && mouseY > windowY+0.5*sizeOfInputArea && mouseY <windowY + sizeOfInputArea ){
+       if(currentTyped.length()>0){
+         currentTyped = currentTyped.substring(0, currentTyped.length()-1);
+       }
      }
      else{
      sVal = enlargeFactor;
@@ -221,12 +223,11 @@ class Button {
 
 
 
-
-////original code
-//boolean didMouseClick(float x, float y, float w, float h) //simple function to do hit testing
-//{
-//  return (mouseX > x && mouseX<x+w && mouseY>y && mouseY<y+h); //check to see if it is in button bounds
-//}
+//original code
+boolean didMouseClick(float x, float y, float w, float h) //simple function to do hit testing
+{
+  return (mouseX > x && mouseX<x+w && mouseY>y && mouseY<y+h); //check to see if it is in button bounds
+}
 
 
 void mousePressed()
@@ -257,10 +258,10 @@ void mousePressed()
   //}
 
   //You are allowed to have a next button outside the 2" area
-  //if (didMouseClick(800, 00, 200, 200)) //check if click is in next button
-  //{
-  //  nextTrial(); //if so, advance to next trial
-  //}
+  if (didMouseClick(800, 00, 200, 200)) //check if click is in next button
+  {
+  nextTrial(); //if so, advance to next trial
+  }
 }
 //
 
