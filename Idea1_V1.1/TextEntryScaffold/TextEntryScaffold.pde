@@ -25,7 +25,7 @@ int windowX = 431;
 int windowY = 991;
 int charVal = 97;
 int xpos = 20+windowX;
-int ypos = 80+windowY;
+int ypos = 40+windowY;
 int keySize = 50;
 String lastPress;
 int enlargeFactor = 3; //change this to adjust the enlargment of design
@@ -128,7 +128,7 @@ void draw()
 
   if (startTime!=0)
   {
-    //you will need something like the next 10 lines in your code. Output does not have to be within the 2 inch area!
+    //display of texts outside operation area
     textAlign(LEFT); //align the text left
     fill(128);
     textSize(55);
@@ -136,47 +136,55 @@ void draw()
     fill(255);
     text("Target:    " , windowX-250, windowY-200); //draw the target string
     int start = windowX;
-    int space = 28;
+    int space = 25;
     textAlign(CENTER);
+    int increment = 0;
     for (int i=0; i<currentPhrase.length();i++){
       if (currentPhrase.charAt(i) == ' '){
           fill(255);
-          text("_" ,start+space*i,windowY-200);
+          text("_" ,start+space+increment+0.5*textWidth('_'),windowY-200);
+          increment += int(textWidth('_'));
         }
         else{
           fill(255);
-          text(currentPhrase.charAt(i) ,start+space*i,windowY-200);
+          text(currentPhrase.charAt(i) ,start+space+increment+0.5*textWidth(currentPhrase.charAt(i)),windowY-200);
+          increment += int(textWidth(currentPhrase.charAt(i)));
         }  
     }
     textAlign(LEFT);
     text("Entered:  ", windowX-250, windowY-100);//draw what the user has entered thus fa
     textAlign(CENTER);
+    int increment2 = 0;
     for (int i=0; i<currentTyped.length(); i++){
-        if (currentTyped.charAt(i) == currentPhrase.charAt(i)){ 
+      if (currentTyped.charAt(i) == currentPhrase.charAt(i)){ 
         if (currentTyped.charAt(i) == ' '){
           fill(0,255,0);
-          text("_" ,start+space*i,windowY-100);
+          text("_" ,start+space+increment2+0.5*textWidth('_'),windowY-100);
+          increment2 += int(textWidth('_'));
         }
         else{
           fill(0,255,0);
-          text(currentTyped.charAt(i) ,start+space*i,windowY-100);
+          text(currentTyped.charAt(i) ,start+space+increment2+0.5*textWidth(currentPhrase.charAt(i)),windowY-100);
+          increment2 += int(textWidth(currentPhrase.charAt(i)));
         }
       }
       else{
         if (currentTyped.charAt(i) == ' '){
           fill(255,0,0);
-          text("_" ,start+space*i,windowY-100);
+          text("_" ,start+space+increment2+0.5*textWidth('_'),windowY-100);
+          increment2 += int(textWidth('_'));
         }
         else{
           fill(255,0,0);
-          text(currentTyped.charAt(i) ,start+space*i,windowY-100);
+          text(currentTyped.charAt(i) ,start+space+increment2+0.5*textWidth(currentPhrase.charAt(i)),windowY-100);
+          increment2 += int(textWidth(currentPhrase.charAt(i)));
         }  
       }
 
     }
    if(millis()%1000 < 500){
      fill(255);
-     text("_", (currentTyped.length())*space+start,windowY-100);
+     text("_", start+space+increment2+0.5*textWidth('_'),windowY-100);
    }
   }
     
