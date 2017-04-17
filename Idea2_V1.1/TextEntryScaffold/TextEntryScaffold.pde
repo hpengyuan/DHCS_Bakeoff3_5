@@ -451,6 +451,13 @@ int prevY = 0;
 
 void mousePressed()
 {
+  if (mouseX > 200+sizeOfInputArea && mouseX < 200+sizeOfInputArea+0.5*sizeOfInputArea && mouseY > 200+sizeOfInputArea && mouseY <200+sizeOfInputArea+0.5*sizeOfInputArea ){
+   if(currentTyped.length()>0){
+     currentTyped = currentTyped.substring(0, currentTyped.length()-1);
+   }
+  }
+ 
+     
   float translateMouseX = mouseX - (inputCenterX - xSize/2);
   float translateMouseY = mouseY - (inputCenterY - ySize/2);
   for (int x = 0; x < 3; x++) {
@@ -500,12 +507,7 @@ void mouseDragged()
 
 void mouseReleased(MouseEvent mouseE) {
   
-  if (mouseX > 200+sizeOfInputArea && mouseX < 200+sizeOfInputArea+0.5*sizeOfInputArea && mouseY > 200+sizeOfInputArea && mouseY <200+sizeOfInputArea+0.5*sizeOfInputArea ){
-       if(currentTyped.length()>0){
-         currentTyped = currentTyped.substring(0, currentTyped.length()-1);
-       }
-     }
-  
+
   
  
   canDrawLine = false;
@@ -599,6 +601,10 @@ void mouseReleased(MouseEvent mouseE) {
   
   print("\n");
   letterLineSet.clear();
+}
+
+void mouseClicked(){
+
 }
 
 void nextTrial()
