@@ -17,7 +17,7 @@ final int DPIofYourDeviceScreen = 577; //you will need to look up the DPI or PPI
 final float sizeOfInputArea = DPIofYourDeviceScreen*1; //aka, 1.0 inches square!
 
 //Variables for idea 1
-char[] chars = {'q','w','e','r','t','y','u','i','o','p','a','s','d','f','g','h','j','k','l','z','x','c','v','b','n','m',' '};
+char[] chars = {'q','w','e','r','t','y','u','i','o','p','a','s','d','f','g','h','j','k','l','z','x','c','v','b','n','m'};
 //char[] chars = {'Q','W','E','R','T','Y','U','I','O','P','A','S','D','F','G','H','J','K','L','Z','X','C','V','B','N','M',' '}; //incase we want to test the upper case keyboard
 Button[] touches = new Button[chars.length];
 
@@ -44,7 +44,7 @@ void setup()
   textFont(createFont("Arial", 24)); //set the font to arial 24
   noStroke(); //my code doesn't use any strokes.
   
-  for (int i = 0; i < chars.length; i++) { 
+  for (int i = 0; i < chars.length; i++) { //remove space display for now
     //chars[i] = char(charVal);
     charVal++;
      if (i==10 ){
@@ -87,7 +87,12 @@ void draw()
     rect(windowX, windowY+0.6*sizeOfInputArea,0.5*sizeOfInputArea,0.4*sizeOfInputArea);
     textAlign(CENTER);
     fill(255);
-    text("BACKSPACE", windowX+0.25*sizeOfInputArea, windowY+0.8*sizeOfInputArea);
+    text("Delete", windowX+0.25*sizeOfInputArea, windowY+0.8*sizeOfInputArea);
+    fill(255);
+    rect(windowX+0.5*sizeOfInputArea, windowY+0.6*sizeOfInputArea,0.5*sizeOfInputArea,0.4*sizeOfInputArea);
+    textAlign(CENTER);
+    fill(0);
+    text("Space", windowX+0.75*sizeOfInputArea, windowY+0.8*sizeOfInputArea);
     
   }
   
@@ -108,8 +113,8 @@ void draw()
   if (startTime==0 & !mousePressed)
   {
     fill(255);
-    textAlign(CENTER);
-    text("Click to start time!", 280, 150); //display this messsage until the user clicks!
+    textAlign(LEFT);
+    text("Click to start time!", windowX, 150); //display this messsage until the user clicks!
   }
 
   if (startTime==0 & mousePressed)
@@ -124,13 +129,44 @@ void draw()
     fill(128);
     text("Phrase " + (currTrialNum+1) + " of " + totalTrialNum, 70, 50); //draw the trial count
     fill(255);
-    text("Target:   " + currentPhrase, 70, 100); //draw the target string
-    text("Entered:  " + currentTyped, 70, 140); //draw what the user has entered thus far 
+    text("Target:    " + currentPhrase, 70, 100); //draw the target string
+    text("Entered:  ", 70, 140);//draw what the user has entered thus far
+    textAlign(CENTER);
+    for (int i=0; i<currentTyped.length(); i++){
+     if (currentTyped.charAt(i) == currentPhrase.charAt(i)){ 
+        if (currentTyped.charAt(i) == ' '){
+          fill(0,255,0);
+          text("_" ,200+15*i,140);
+        }
+        else{
+          fill(0,255,0);
+          text(currentTyped.charAt(i) ,200+15*i,140);
+        }
+      }
+      else{
+        if (currentTyped.charAt(i) == ' '){
+          fill(255,0,0);
+          text("_" ,200+15*i,140);
+        }
+        else{
+          fill(255,0,0);
+          text(currentTyped.charAt(i) ,200+15*i,140);
+        }  
+      }
+
+    }
+   if(millis()%1000 < 500){
+     fill(255);
+     text("_",200+15*(currentTyped.length()),140);
+   }
+  }
+    
+    
     fill(255, 0, 0);
     rect(800, 00, 200, 200); //drag next button
     fill(255);
+    textAlign(LEFT);
     text("NEXT > ", 850, 100); //draw next label
-  }
 
     ////my draw code
     //textAlign(CENTER);
@@ -158,11 +194,14 @@ void mouseReleased(){
     //zoom in when screen with full keyboard clicked
    
    else{
-     if (mouseX > windowX && mouseX < windowY+sizeOfInputArea*0.5 && mouseY > windowY+0.5*sizeOfInputArea && mouseY <windowY + sizeOfInputArea ){
+     if (mouseX > windowX && mouseX < windowX+0.5*sizeOfInputArea && mouseY > windowY+0.5*sizeOfInputArea && mouseY <windowY + sizeOfInputArea ){
        if(currentTyped.length()>0){
          currentTyped = currentTyped.substring(0, currentTyped.length()-1);
        }
      }
+     else if (mouseX > windowX+0.5*sizeOfInputArea && mouseX < windowX+sizeOfInputArea && mouseY > windowY+0.5*sizeOfInputArea && mouseY <windowY + sizeOfInputArea ){
+       currentTyped += " ";
+       }
      else{
      sVal = enlargeFactor;
      tranX = -(mouseX - int(sizeOfInputArea)/(2*sVal)-windowX/sVal); 
@@ -210,11 +249,11 @@ class Button {
       return charString;
     } 
     //check if space key pressed
-    else if(Xmouse > (x+tranX)*sVal && Xmouse < (x+tranX+keySize*6)*sVal && Ymouse > (y+tranY)*sVal && Ymouse < (y+tranY+keySize)*sVal && i==26){
+    /*else if(Xmouse > (x+tranX)*sVal && Xmouse < (x+tranX+keySize*6)*sVal && Ymouse > (y+tranY)*sVal && Ymouse < (y+tranY+keySize)*sVal && i==26){
       println(charString); //prints relevant char
       currentTyped += charString;
       return charString;
-    }  
+    }  */
     else {
     return null;
     }
