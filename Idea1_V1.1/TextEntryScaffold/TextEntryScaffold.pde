@@ -135,7 +135,7 @@ void draw()
     text("Phrase " + (currTrialNum+1) + " of " + totalTrialNum, windowX-250, windowY-300); //draw the trial count
     fill(255);
     text("Target:    " , windowX-250, windowY-200); //draw the target string
-    int start = windowX;
+    int start = windowX-50;
     int space = 25;
     textAlign(CENTER);
     int increment = 0;
@@ -158,24 +158,24 @@ void draw()
     for (int i=0; i<currentTyped.length(); i++){
       if (currentTyped.charAt(i) == currentPhrase.charAt(i)){ 
         if (currentTyped.charAt(i) == ' '){
-          fill(0,255,0);
+          fill(255); //change to (0,255,0) for green
           text("_" ,start+space+increment2+0.5*textWidth('_'),windowY-100);
           increment2 += int(textWidth('_'));
         }
         else{
-          fill(0,255,0);
+          fill(255); //change to (0,255,0) for green
           text(currentTyped.charAt(i) ,start+space+increment2+0.5*textWidth(currentPhrase.charAt(i)),windowY-100);
           increment2 += int(textWidth(currentPhrase.charAt(i)));
         }
       }
       else{
         if (currentTyped.charAt(i) == ' '){
-          fill(255,0,0);
+          fill(255,0,0); //change to (255,0,0) for red
           text("_" ,start+space+increment2+0.5*textWidth('_'),windowY-100);
           increment2 += int(textWidth('_'));
         }
         else{
-          fill(255,0,0);
+          fill(255); //change to (255,0,0) for red
           text(currentTyped.charAt(i) ,start+space+increment2+0.5*textWidth(currentPhrase.charAt(i)),windowY-100);
           increment2 += int(textWidth(currentPhrase.charAt(i)));
         }  
